@@ -13,6 +13,8 @@ namespace MvcMovie.Controllers
     public class BookController : Controller
     {
         private readonly MvcMovieContext _context;
+        [BindProperty]
+        public Book Book { get; set; }
 
         public BookController(MvcMovieContext context)
         {
@@ -24,6 +26,7 @@ namespace MvcMovie.Controllers
         {
             return View(await _context.Book.ToListAsync());
         }
+
 
         // GET: Books/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -115,6 +118,27 @@ namespace MvcMovie.Controllers
             }
             return View(book);
         }
+
+        #region API Calls
+        /*[HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            return Json(new { data = await _context.Book.ToListAsync() });
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var bookFromDb = await _context.Book.FirstOrDefaultAsync(u => u.Id == id);
+            if (bookFromDb == null)
+            {
+                return Json(new { success = false, message = "Error while Deleting" });
+            }
+            _context.Book.Remove(bookFromDb);
+            await _context.SaveChangesAsync();
+            return Json(new { success = true, message = "Delete successful" });
+        }*/
+        #endregion
 
         // GET: Books/Delete/5
         public async Task<IActionResult> Delete(int? id)
