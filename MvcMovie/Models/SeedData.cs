@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using MvcMovie.Data;
 using System;
@@ -10,12 +11,39 @@ namespace MvcMovie.Models
 {
     public class SeedData
     {
+        private readonly UserManager<StoreUser> _userManager;
+        public SeedData(MvcMovieContext context, UserManager<StoreUser> userManager)
+        {
+            _userManager = userManager;
+        }
+        public async Task Seed()
+        {
+            StoreUser user = await _userManager.FindByEmailAsync("newhoopsdynasty@gmail.com");
+            if(user == null)
+            {
+                user = new StoreUser()
+                {
+                    FirstName = "LeBron",
+                    LastName = "James",
+                    Email = "newhoopsdynasty@gmail.com",
+                    UserName = "Ashen"
+                };
+            }
+            var result = await _userManager.CreateAsync(user, "password");
+            if(result != IdentityResult.Success)
+            {
+                throw new InvalidOperationException("Could not create new user in seeder");
+            }
+        }
+
         public static void Initialize(IServiceProvider serviceProvider)
         {
+
             using (var context = new MvcMovieContext(
                 serviceProvider.GetRequiredService<
                     DbContextOptions<MvcMovieContext>>()))
             {
+
                 // Look for any movies.
                 if (context.Movie.Any())
                 {

@@ -22,7 +22,7 @@ namespace MvcMovie.Controllers
         {
             return View();
         }
-
+        [HttpGet("Privacy")]
         public IActionResult Privacy()
         {
             return View();

@@ -5,12 +5,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MvcMovie.Data;
 using MvcMovie.Hubs;
+using MvcMovie.Models;
 
 namespace MvcMovie
 {
@@ -26,6 +28,12 @@ namespace MvcMovie
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddIdentity<StoreUser, IdentityRole>(options =>
+            {
+                options.User.RequireUniqueEmail = true;
+                options.Password.RequireUppercase = true;
+            }).AddEntityFrameworkStores<MvcMovieContext>();
+
             services.AddControllersWithViews();
             services.AddSignalR();
             services.AddDbContext<MvcMovieContext>(options =>
@@ -48,7 +56,9 @@ namespace MvcMovie
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
-            app.UseRouting();
+            app.UseAuthentication();
+
+            app.UseRouting(); 
 
             app.UseAuthorization();
 

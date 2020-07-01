@@ -66,9 +66,14 @@ body {
   margin-bottom: 60px;
 }
 .footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px; /* Vertically center the text there */
+    margin-top: 20px;
+    position: absolute;
+    background: #293951;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 35px; /* Vertically center the text there */
+}
+.m-footer-copyright{
+    color:antiquewhite;
 }
